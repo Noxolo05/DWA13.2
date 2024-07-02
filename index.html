@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tally App and Products Exercises</title>
+</head>
+<body>
+  <h1>Redux-inspired Store for Tally App and Products Exercises</h1>
+  <p>Open the console to see the state changes and results of exercises.</p>
+
+  <script>
+    // Tally App Exercise
+    const provinces = ['Western Cape', 'Gauteng', 'Northern Cape', 'Eastern Cape', 'KwaZulu-Natal', 'Free State'];
+    const names = ['Ashwin', 'Sibongile', 'Jan-Hendrik', 'Sifso', 'Shailen', 'Frikkie'];
+
+    // Use forEach to console log each name to the console
+    names.forEach(name => console.log(name));
+
+    // Use forEach to console log each name with a matching province
+    names.forEach((name, index) => console.log(`${name} (${provinces[index]})`));
+
+    // Using map to turn all province names to uppercase
+    const upperCaseProvinces = provinces.map(province => province.toUpperCase());
+    console.log(upperCaseProvinces);
+
+    // Create a new array with map that has the amount of characters in each name
+    const nameLengths = names.map(name => name.length);
+    console.log(nameLengths); // [6, 9, 11, 5, 7, 7]
+
+    // Using sort to sort all provinces alphabetically
+    const sortedProvinces = provinces.slice().sort();
+    console.log(sortedProvinces);
+
+    // Use filter to remove all provinces that have the word "Cape" in them and return the amount of provinces left
+    const filteredProvinces = provinces.filter(province => !province.includes('Cape'));
+    console.log(filteredProvinces.length); // 3
+
+    // Create a boolean array by using map and some to determine whether a name contains an "S" character
+    const hasS = names.map(name => name.toLowerCase().includes('s'));
+    console.log(hasS); // [true, true, false, true, true, false]
+
+    // Using only reduce, turn the names and provinces into an object
+    const nameProvinceMap = names.reduce((acc, name, index) => {
+      acc[name] = provinces[index];
+      return acc;
+    }, {});
+    console.log(nameProvinceMap);
+    // {
+    //   Ashwin: 'Western Cape',
+    //   Sibongile: 'Gauteng',
+    //   'Jan-Hendrik': 'Northern Cape',
+    //   Sifso: 'Eastern Cape',
+    //   Shailen: 'KwaZulu-Natal',
+    //   Frikkie: 'Free State'
+    // }
+
+    // Products Exercise
+    const products = [
+      { product: 'banana', price: "2" },
+      { product: 'mango', price: 6 },
+      { product: 'potato', price: ' ' },
+      { product: 'avocado', price: "8" },
+      { product: 'coffee', price: 10 },
+      { product: 'tea', price: '' },
+    ];
+
+    // Use forEach to console.log each product name to the console
+    products.forEach(product => console.log(product.product));
+
+    // Use filter to filter out products that have a name longer than 5 characters
+    const filteredProducts = products.filter(product => product.product.length <= 5);
+    console.log(filteredProducts);
+
+    // Using filter and map to convert prices and remove products without prices, then use reduce to calculate the combined price
+    const total = products
+      .filter(product => product.price !== '' && product.price !== ' ')
+      .map(product => ({ ...product, price: Number(product.price) }))
+      .reduce((sum, product) => sum + product.price, 0);
+    console.log(total);
+
+    // Use reduce to concatenate all product names
+    const concatenatedNames = products.reduce((acc, product, index) => {
+      if (index === products.length - 1) {
+        return `${acc}${product.product}`;
+      } else {
+        return `${acc}${product.product}, `;
+      }
+    }, '');
+    console.log(concatenatedNames);
+
+    // Use reduce to calculate both the highest and lowest-priced items
+    const highestLowest = products
+      .filter(product => product.price !== '' && product.price !== ' ')
+      .map(product => ({ ...product, price: Number(product.price) }))
+      .reduce((acc, product) => {
+        if (product.price > acc.highest.price) acc.highest = product;
+        if (product.price < acc.lowest.price) acc.lowest = product;
+        return acc;
+      }, { highest: { product: '', price: -Infinity }, lowest: { product: '', price: Infinity } });
+    console.log(`Highest: ${highestLowest.highest.product}. Lowest: ${highestLowest.lowest.product}.`);
+
+    // Using Object.entries and reduce to recreate the object with renamed keys
+    const renamedProducts = products.reduce((acc, product) => {
+      acc.push({ name: product.product, cost: product.price });
+      return acc;
+    }, []);
+    console.log(renamedProducts);
+  </script>
+</body>
+</html>
